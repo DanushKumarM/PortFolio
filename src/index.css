@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ─── Design Tokens ─────────────────────────────────────── */
+:root {
+  --bg:           #080f0f;
+  --bg-card:      #0c1515;
+  --bg-section:   #0d1818;
+  --border:       #1a3030;
+  --accent:       #2d9e8f;
+  --accent-hover: #3db8a5;
+  --text-primary: #e8f0ef;
+  --text-muted:   #6a8a88;
+  --text-dim:     #3a5250;
+  --glow:         rgba(45, 158, 143, 0.18);
+  --glow-strong:  rgba(45, 158, 143, 0.35);
+}
+
+@theme {
+  --color-background: #080f0f;
+  --color-foreground: #e8f0ef;
+  --color-card:       rgba(12, 21, 21, 0.8);
+  --color-primary:    #2d9e8f;
+  --color-secondary:  #3db8a5;
+  --color-accent:     #0d5c50;
+  --color-border:     rgba(26, 48, 48, 0.8);
+  --color-emerald:    #2d9e8f;
+  --color-indigo:     #3db8a5;
+  --color-purple:     #5ecfb0;
+  --color-blue:       #2d9e8f;
+
+  --font-inter:  'Inter',          system-ui, sans-serif;
+  --font-outfit: 'Outfit', system-ui, sans-serif;
+  --font-mono:   'Inter', system-ui, sans-serif;
+}
+
+/* ─── Base ──────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+  }
+
+  ::selection {
+    background: rgba(45, 158, 143, 0.3);
+    color: #e8f0ef;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 999px;
+  }
+}
+
+/* ─── Utilities ─────────────────────────────────────────── */
+@utility glass-card {
+  background-color: rgba(12, 21, 21, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(26, 48, 48, 0.8);
+  border-radius: 1.25rem;
+}
+
+@utility teal-gradient {
+  background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, #2d9e8f, #5ecfb0);
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
