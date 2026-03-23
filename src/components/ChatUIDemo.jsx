@@ -65,11 +65,12 @@ export default function ChatUIDemo() {
   const [input, setInput]       = useState('');
   const [search, setSearch]     = useState('');
   const [tab, setTab]           = useState('All');
-  const endRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    // block: 'nearest' prevents the entire browser viewport from scrolling if the element is already visible
-    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   }, [allMsgs, activeId]);
 
   const open = id => { setActiveId(id); setBadges(p=>({...p,[id]:0})); };
@@ -210,7 +211,7 @@ export default function ChatUIDemo() {
         </div>
 
         {/* Messages */}
-        <div style={{flex:1,overflowY:'auto',padding:'14px 16px',display:'flex',flexDirection:'column',gap:4,background:'#f7f6f2'}}>
+        <div ref={containerRef} style={{flex:1,overflowY:'auto',padding:'14px 16px',display:'flex',flexDirection:'column',gap:4,background:'#f7f6f2'}}>
           <div style={{textAlign:'center',fontSize:11,color:'#8a8880',margin:'6px 0 10px',display:'flex',alignItems:'center',gap:8}}>
             <div style={{flex:1,height:1,background:'rgba(0,0,0,0.07)'}}/><span>Today</span><div style={{flex:1,height:1,background:'rgba(0,0,0,0.07)'}}/>
           </div>
@@ -227,7 +228,7 @@ export default function ChatUIDemo() {
               </motion.div>
             ))}
           </AnimatePresence>
-          <div ref={endRef}/>
+
         </div>
 
         {/* Input */}
