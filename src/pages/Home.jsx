@@ -7,7 +7,7 @@ import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import MascotSegment from '../components/MascotSegment';
+
 import InteractiveProjects from '../components/InteractiveProjects';
 
 const Home = () => {
@@ -56,7 +56,6 @@ const Home = () => {
         <HeroSection />
         <About />
         <Projects />
-        <MascotSegment />
         <InteractiveProjects />
         <Skills />
         <Contact />
