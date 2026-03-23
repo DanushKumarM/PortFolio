@@ -102,6 +102,37 @@ const Navbar = () => {
           {/* Right CTA */}
           <div className="hidden md:flex alignItems-center gap-4">
             <motion.a
+              href="/DanushKumarM_Resume.pdf"
+              download
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.96 }}
+              style={{
+                display: 'inline-block',
+                padding: '0.45rem 1.4rem',
+                border: '1px solid rgba(45,158,143,0.2)',
+                borderRadius: '999px',
+                color: 'rgba(232, 240, 239, 0.7)',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                letterSpacing: '0.03em',
+                textDecoration: 'none',
+                background: 'transparent',
+                transition: 'background 0.25s, border-color 0.25s, color 0.25s',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#2d9e8f';
+                e.currentTarget.style.color = '#e8f0ef';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(45,158,143,0.2)';
+                e.currentTarget.style.color = 'rgba(232, 240, 239, 0.7)';
+              }}
+            >
+              Resume
+            </motion.a>
+            <motion.a
               href="mailto:danushkumar580@gmail.com"
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.96 }}

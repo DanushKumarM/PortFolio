@@ -100,7 +100,7 @@ const Footer = () => {
               ))}
             </div>
             <a 
-              href="/DanushKumarM_FullStackDeveloper_Resume.pdf"
+              href="/DanushKumarM_Resume.pdf"
               download
               style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
@@ -128,7 +128,7 @@ const Footer = () => {
                 e.currentTarget.style.color = '#2d9e8f';
               }}
             >
-              Resume.pdf
+              Resume
             </a>
           </div>
         </div>
