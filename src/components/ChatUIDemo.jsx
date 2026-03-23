@@ -67,7 +67,10 @@ export default function ChatUIDemo() {
   const [tab, setTab]           = useState('All');
   const endRef = useRef(null);
 
-  useEffect(() => { endRef.current?.scrollIntoView({behavior:'smooth'}); }, [allMsgs, activeId]);
+  useEffect(() => {
+    // block: 'nearest' prevents the entire browser viewport from scrolling if the element is already visible
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [allMsgs, activeId]);
 
   const open = id => { setActiveId(id); setBadges(p=>({...p,[id]:0})); };
 
@@ -87,30 +90,59 @@ export default function ChatUIDemo() {
   const font = "'DM Sans', sans-serif";
   const border = '1px solid rgba(0,0,0,0.07)';
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
-    <div style={{width:'100%',height:'100%',display:'flex',fontFamily:font,background:'#f7f6f2',color:'#18181a',overflow:'hidden'}}>
+    <div style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      fontFamily: font,
+      background: '#f7f6f2',
+      color: '#18181a',
+      overflow: 'hidden'
+    }}>
 
-      {/* Icon sidebar */}
-      <div style={{width:62,background:'#fff',borderRight:border,display:'flex',flexDirection:'column',alignItems:'center',padding:'14px 0',gap:6,flexShrink:0}}>
-        <div style={{width:34,height:34,background:'#4f3ef5',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10}}>
-          <Ico stroke="#fff" sw={2.2}><path d="M5 12h14M13 6l6 6-6 6"/></Ico>
+      {/* Icon sidebar - hidden on mobile for space */}
+      {!isMobile && (
+        <div style={{width:62,background:'#fff',borderRight:border,display:'flex',flexDirection:'column',alignItems:'center',padding:'14px 0',gap:6,flexShrink:0}}>
+          <div style={{width:34,height:34,background:'#4f3ef5',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10}}>
+            <Ico stroke="#fff" sw={2.2}><path d="M5 12h14M13 6l6 6-6 6"/></Ico>
+          </div>
+          {[
+            {active:true,  icon:<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>},
+            {active:false, icon:<><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.99 1.18 2 2 0 013 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></>},
+            {active:false, icon:<><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></>},
+            {active:false, icon:<><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></>},
+          ].map((b,i)=>(
+            <button key={i} style={{width:36,height:36,borderRadius:9,border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:b.active?'#edeaff':'transparent',color:b.active?'#4f3ef5':'#8a8880',transition:'all 150ms'}}>
+              <Ico size={17}>{b.icon}</Ico>
+            </button>
+          ))}
+          <div style={{flex:1}}/>
+          <div style={{width:30,height:30,borderRadius:'50%',background:'#c7d2fe',color:'#4338ca',fontSize:11,fontWeight:500,display:'flex',alignItems:'center',justifyContent:'center'}}>AR</div>
         </div>
-        {[
-          {active:true,  icon:<><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></>},
-          {active:false, icon:<><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.99 1.18 2 2 0 013 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></>},
-          {active:false, icon:<><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></>},
-          {active:false, icon:<><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></>},
-        ].map((b,i)=>(
-          <button key={i} style={{width:36,height:36,borderRadius:9,border:'none',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',background:b.active?'#edeaff':'transparent',color:b.active?'#4f3ef5':'#8a8880',transition:'all 150ms'}}>
-            <Ico size={17}>{b.icon}</Ico>
-          </button>
-        ))}
-        <div style={{flex:1}}/>
-        <div style={{width:30,height:30,borderRadius:'50%',background:'#c7d2fe',color:'#4338ca',fontSize:11,fontWeight:500,display:'flex',alignItems:'center',justifyContent:'center'}}>AR</div>
-      </div>
+      )}
 
-      {/* Chat list */}
-      <div style={{width:275,background:'#fff',borderRight:border,display:'flex',flexDirection:'column',flexShrink:0}}>
+      {/* Chat list - hidden on mobile if a chat is active, but here we'll just make it narrow or wrap */}
+      <div style={{
+        width: isMobile ? '100%' : 275,
+        height: isMobile ? '180px' : '100%',
+        background: '#fff',
+        borderRight: isMobile ? 'none' : border,
+        borderBottom: isMobile ? border : 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        flexShrink: 0
+      }}>
         <div style={{padding:'17px 15px 10px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <span style={{fontSize:17,fontWeight:500,letterSpacing:'-0.02em'}}>Messages</span>
           <button style={{width:28,height:28,borderRadius:7,border,background:'transparent',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'#8a8880'}}>

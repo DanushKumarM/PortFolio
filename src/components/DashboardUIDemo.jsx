@@ -68,44 +68,63 @@ const Ico = ({ children, size=16, stroke='currentColor', sw=1.7 }) => (
 
 export default function DashboardUIDemo() {
   const [activePage, setActivePage] = useState('Dashboard');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
-    <div style={{width:'100%',height:'100%',display:'flex',fontFamily:font,background:'#f7f6f2',color:'#18181a',overflow:'hidden'}}>
+    <div style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      fontFamily: font,
+      background: '#f7f6f2',
+      color: '#18181a',
+      overflow: 'hidden'
+    }}>
 
       {/* Sidebar */}
-      <div style={{width:210,background:'#fff',borderRight:border,display:'flex',flexDirection:'column',padding:'20px 0',flexShrink:0}}>
-        {/* Logo */}
-        <div style={{padding:'0 18px 20px',display:'flex',alignItems:'center',gap:9,borderBottom:border,marginBottom:8}}>
-          <div style={{width:32,height:32,background:accent,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <Ico stroke="#fff" sw={2.2} size={17}><path d="M5 12h14M13 6l6 6-6 6"/></Ico>
+      {!isMobile && (
+        <div style={{width:210,background:'#fff',borderRight:border,display:'flex',flexDirection:'column',padding:'20px 0',flexShrink:0}}>
+          {/* Logo */}
+          <div style={{padding:'0 18px 20px',display:'flex',alignItems:'center',gap:9,borderBottom:border,marginBottom:8}}>
+            <div style={{width:32,height:32,background:accent,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              <Ico stroke="#fff" sw={2.2} size={17}><path d="M5 12h14M13 6l6 6-6 6"/></Ico>
+            </div>
+            <div>
+              <div style={{fontSize:14,fontWeight:500,letterSpacing:'-0.02em'}}>ArrowSkills</div>
+              <div style={{fontSize:11,color:'#8a8880'}}>Learning Platform</div>
+            </div>
           </div>
-          <div>
-            <div style={{fontSize:14,fontWeight:500,letterSpacing:'-0.02em'}}>ArrowSkills</div>
-            <div style={{fontSize:11,color:'#8a8880'}}>Learning Platform</div>
-          </div>
-        </div>
 
-        {/* Nav */}
-        <div style={{flex:1,padding:'4px 10px',display:'flex',flexDirection:'column',gap:2}}>
-          {nav.map(n=>(
-            <button key={n.label} onClick={()=>setActivePage(n.label)}
-              style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:8,border:'none',cursor:'pointer',background:activePage===n.label?'#edeaff':'transparent',color:activePage===n.label?accent:'#64748b',fontFamily:font,fontSize:13,fontWeight:activePage===n.label?500:400,width:'100%',textAlign:'left',transition:'all 150ms'}}>
-              <Ico size={15} stroke={activePage===n.label?accent:'#64748b'}>{n.icon}</Ico>
-              {n.label}
-            </button>
-          ))}
-        </div>
-
-        {/* User */}
-        <div style={{padding:'12px 16px',borderTop:border,display:'flex',alignItems:'center',gap:9}}>
-          <div style={{width:32,height:32,borderRadius:'50%',background:'#e0e7ff',color:'#4338ca',fontSize:12,fontWeight:500,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>AR</div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:13,fontWeight:500,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>Arjun Ravi</div>
-            <div style={{fontSize:11,color:'#8a8880'}}>Pro Plan</div>
+          {/* Nav */}
+          <div style={{flex:1,padding:'4px 10px',display:'flex',flexDirection:'column',gap:2}}>
+            {nav.map(n=>(
+              <button key={n.label} onClick={()=>setActivePage(n.label)}
+                style={{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',borderRadius:8,border:'none',cursor:'pointer',background:activePage===n.label?'#edeaff':'transparent',color:activePage===n.label?accent:'#64748b',fontFamily:font,fontSize:13,fontWeight:activePage===n.label?500:400,width:'100%',textAlign:'left',transition:'all 150ms'}}>
+                <Ico size={15} stroke={activePage===n.label?accent:'#64748b'}>{n.icon}</Ico>
+                {n.label}
+              </button>
+            ))}
           </div>
-          <Ico size={14} stroke="#8a8880"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></Ico>
+
+          {/* User */}
+          <div style={{padding:'12px 16px',borderTop:border,display:'flex',alignItems:'center',gap:9}}>
+            <div style={{width:32,height:32,borderRadius:'50%',background:'#e0e7ff',color:'#4338ca',fontSize:12,fontWeight:500,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>AR</div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:13,fontWeight:500,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>Arjun Ravi</div>
+              <div style={{fontSize:11,color:'#8a8880'}}>Pro Plan</div>
+            </div>
+            <Ico size={14} stroke="#8a8880"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></Ico>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main */}
       <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
@@ -134,12 +153,12 @@ export default function DashboardUIDemo() {
         <div style={{flex:1,overflowY:'auto',padding:'18px 22px',display:'flex',flexDirection:'column',gap:18}}>
 
           {/* Stats row */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12}}>
+          <div style={{display:'grid',gridTemplateColumns:isMobile ? '1fr 1fr' : 'repeat(4,1fr)',gap:12}}>
             {stats.map((st,i)=>(
               <motion.div key={st.label} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:i*0.07,duration:0.35}}
-                style={{background:'#fff',borderRadius:12,border,padding:'14px 16px'}}>
+                style={{background:'#fff',borderRadius:12,border,padding:isMobile ? '10px' : '14px 16px'}}>
                 <div style={{fontSize:11,color:'#8a8880',marginBottom:6,fontWeight:400}}>{st.label}</div>
-                <div style={{fontSize:26,fontWeight:500,color:'#18181a',letterSpacing:'-0.03em',lineHeight:1}}>
+                <div style={{fontSize:isMobile ? 20 : 26,fontWeight:500,color:'#18181a',letterSpacing:'-0.03em',lineHeight:1}}>
                   <CountUp target={st.value} suffix={st.suffix}/>
                 </div>
                 <div style={{marginTop:6,display:'flex',alignItems:'center',gap:4}}>
@@ -151,7 +170,7 @@ export default function DashboardUIDemo() {
           </div>
 
           {/* Continue learning + Upcoming */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 240px',gap:14}}>
+          <div style={{display:'grid',gridTemplateColumns:isMobile ? '1fr' : '1fr 240px',gap:14}}>
 
             {/* Continue learning */}
             <div style={{background:'#fff',borderRadius:12,border,padding:'16px 18px'}}>
@@ -212,7 +231,7 @@ export default function DashboardUIDemo() {
               <span style={{fontSize:14,fontWeight:500}}>Recommended for you</span>
               <span style={{fontSize:12,color:accent,cursor:'pointer'}}>Browse all</span>
             </div>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12}}>
+            <div style={{display:'grid',gridTemplateColumns:isMobile ? '1fr' : 'repeat(3,1fr)',gap:12}}>
               {recommended.map((r,i)=>(
                 <div key={r.title} style={{padding:'14px',borderRadius:10,border,background:'#f7f6f2',cursor:'pointer',transition:'all 150ms'}}>
                   <div style={{display:'inline-flex',padding:'2px 8px',borderRadius:5,background:'#edeaff',color:accent,fontSize:10,fontWeight:500,marginBottom:8}}>{r.tag}</div>

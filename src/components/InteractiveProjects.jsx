@@ -190,7 +190,9 @@ const InteractiveProjects = () => {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
               style={{
-                height: isChat ? '560px' : '680px',
+                minHeight: isChat ? '560px' : '680px',
+                height: 'auto',
+                maxHeight: '800px',
                 overflow: 'hidden',
               }}
             >
