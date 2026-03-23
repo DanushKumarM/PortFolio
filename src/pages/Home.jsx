@@ -56,6 +56,7 @@ const Home = () => {
         <HeroSection />
         <About />
         <Projects />
+        <MascotSegment />
         <InteractiveProjects />
         <Skills />
         <Contact />
